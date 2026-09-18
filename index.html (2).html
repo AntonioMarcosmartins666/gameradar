@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GameRadar - Histórico & Jogos Grátis</title>
+
+  <!-- Google Fonts & Lucide Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --bg-dark: #0b0e14;
+      --card-bg: #151a23;
+      --card-hover: #1c2330;
+      --accent-green: #00ff88;
+      --accent-purple: #8a2be2;
+      --accent-yellow: #ffca28;
+      --text-main: #f0f4f8;
+      --text-muted: #8b9bb4;
+      --border-color: #242d3d;
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand i {
+      color: var(--accent-green);
+      animation: pulse 2s infinite;
+    }
+
+    .brand h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .brand h1 span { color: var(--accent-green); }
+
+    .badge-no-ads {
+      background: rgba(138, 43, 226, 0.15);
+      color: #b57edc;
+      border: 1px solid var(--accent-purple);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+    }
+
+    /* Abas de Filtro */
+    .filter-tabs {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 5px;
+    }
+
+    .tab-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active, .tab-btn:hover {
+      background: var(--card-hover);
+      color: #fff;
+      border-color: var(--accent-green);
+    }
+
+    .tab-btn.free-tab.active {
+      border-color: var(--accent-yellow);
+      color: var(--accent-yellow);
+      background: rgba(255, 202, 40, 0.15);
+    }
+
+    /* Input de Busca */
+    .search-box {
+      position: relative;
+      width: 100%;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 16px 16px 16px 48px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      color: var(--text-main);
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .search-box input:focus {
+      border-color: var(--accent-green);
+      box-shadow: 0 0 15px rgba(0, 255, 136, 0.15);
+    }
+
+    .search-box i {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+    }
+
+    /* Grid de Jogos */
+    .games-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    @media (min-width: 600px) {
+      .games-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (min-width: 1024px) {
+      .games-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* Card */
+    .game-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s, background-color 0.2s, border-color 0.2s;
+    }
+
+    .game-card:hover {
+      transform: translateY(-4px);
+      background-color: var(--card-hover);
+      border-color: var(--accent-green);
+    }
+
+    .thumb-wrapper {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      overflow: hidden;
+      background-color: #1a202c;
+    }
+
+    .game-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transition: transform 0.3s ease;
+    }
+
+    .game-card:hover .game-thumb {
+      transform: scale(1.05);
+    }
+
+    .discount-tag {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: var(--accent-green);
+      color: #000;
+      font-weight: 800;
+      font-size: 0.85rem;
+      padding: 6px 12px;
+      border-radius: 8px;
+      z-index: 2;
+    }
+
+    .discount-tag.free-tag {
+      background: var(--accent-yellow);
+    }
+
+    .store-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(11, 14, 20, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-color);
+      padding: 4px 10px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      z-index: 2;
+    }
+
+    .store-icon {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+    }
+
+    .store-name {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .game-info {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex: 1;
+      gap: 16px;
+    }
+
+    .game-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--text-main);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .game-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .platform-tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-muted);
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      gap: 8px;
+    }
+
+    .prices {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .old-price {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-decoration: line-through;
+    }
+
+    .new-price {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--accent-green);
+    }
+
+    .new-price.free {
+      color: var(--accent-yellow);
+    }
+
+    .actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .history-btn {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 8px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .history-btn:hover {
+      background: var(--card-hover);
+      color: #fff;
+      border-color: var(--text-muted);
+    }
+
+    .buy-btn {
+      background: transparent;
+      border: 1px solid var(--accent-green);
+      color: var(--accent-green);
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 8px 14px;
+      border-radius: 8px;
+      text-align: center;
+      text-decoration: none;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .buy-btn:hover {
+      background: var(--accent-green);
+      color: #000;
+    }
+
+    /* Modal de Histórico de Preço */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(5px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      width: 100%;
+      max-width: 450px;
+      padding: 24px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px; right: 16px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .modal-close:hover { color: #fff; }
+
+    .history-stat {
+      background: rgba(0,0,0,0.3);
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .history-stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .history-stat-val {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--accent-green);
+    }
+
+    .loader {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.7; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <header>
+      <div class="brand">
+        <i data-lucide="radar" size="32"></i>
+        <h1>Game<span>Radar</span> PC</h1>
+      </div>
+      <span class="badge-no-ads">OFERTAS & HISTÓRICO</span>
+    </header>
+
+    <!-- Abas de Filtros Rápidos -->
+    <div class="filter-tabs">
+      <button class="tab-btn active" onclick="setMode('deals', this)"><i data-lucide="flame" size="16"></i> Melhores Ofertas</button>
+      <button class="tab-btn free-tab" onclick="setMode('free', this)"><i data-lucide="gift" size="16"></i> Jogos Grátis (0.00)</button>
+    </div>
+
+    <div class="search-box">
+      <i data-lucide="search" size="18"></i>
+      <input type="text" id="searchInput" placeholder="Buscar qualquer jogo (ex: Resident Evil, Cyberpunk, GTA)...">
+    </div>
+
+    <main class="games-grid" id="gamesContainer">
+      <div class="loader">
+        <p>Buscando histórico e ofertas em tempo real...</p>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal do Histórico de Menor Preço -->
+  <div class="modal-overlay" id="historyModal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal()"><i data-lucide="x" size="20"></i></button>
+      <h3 id="modalGameTitle" style="font-size: 1.2rem; padding-right: 20px;">Carregando...</h3>
+      
+      <div class="history-stat">
+        <div class="history-stat-label">Menor Preço de Todos os Tempos</div>
+        <div class="history-stat-val" id="modalLowestPrice">R$ --</div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;" id="modalLowestDate">Registrado em: --</div>
+      </div>
+
+      <div class="history-stat">
+        <div class="history-stat-label">Preço Normal Sem Desconto</div>
+        <div style="font-size: 1.1rem; font-weight: 600;" id="modalRetailPrice">R$ --</div>
+      </div>
+
+      <a id="modalBuyLink" href="#" target="_blank" class="buy-btn" style="justify-content: center; width: 100%; margin-top: 8px;">
+        Ver Melhor Oferta Agora <i data-lucide="external-link" size="14"></i>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    const gamesContainer = document.getElementById('gamesContainer');
+    const searchInput = document.getElementById('searchInput');
+    const historyModal = document.getElementById('historyModal');
+
+    const USD_TO_BRL = 5.20;
+    let storesMap = {};
+    let currentMode = 'deals'; // 'deals' ou 'free'
+    const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=600&auto=format&fit=crop';
+
+    async function loadStores() {
+      try {
+        const res = await fetch('https://www.cheapshark.com/api/1.0/stores');
+        const stores = await res.json();
+        stores.forEach(store => {
+          storesMap[store.storeID] = {
+            name: store.storeName,
+            icon: `https://www.cheapshark.com${store.images.icon}`
+          };
+        });
+      } catch (err) {
+        console.error('Erro ao carregar lojas:', err);
+      }
+    }
+
+    function getHDImage(thumb, steamAppID) {
+      if (steamAppID) {
+        return `https://cdn.cloudflare.steamstatic.com/steam/apps/${steamAppID}/header.jpg`;
+      }
+      if (thumb && thumb.includes('capsule_sm_120.jpg')) {
+        return thumb.replace('capsule_sm_120.jpg', 'header.jpg');
+      }
+      return thumb || FALLBACK_IMAGE;
+    }
+
+    async function fetchGames(query = '') {
+      gamesContainer.innerHTML = '<div class="loader"><p>Buscando banco de dados...</p></div>';
+
+      try {
+        if (Object.keys(storesMap).length === 0) await loadStores();
+
+        let url = 'https://www.cheapshark.com/api/1.0/deals?pageSize=24&sortBy=Deal%20Rating';
+        
+        if (currentMode === 'free') {
+          url = 'https://www.cheapshark.com/api/1.0/deals?upperPrice=0&pageSize=24&sortBy=Recent';
+        } else if (query.trim() !== '') {
+          url = `https://www.cheapshark.com/api/1.0/deals?title=${encodeURIComponent(query)}&pageSize=24&sortBy=Deal%20Rating`;
+        }
+
+        const res = await fetch(url);
+        const deals = await res.json();
+
+        if (!deals || deals.length === 0) {
+          gamesContainer.innerHTML = `<div class="loader"><p>Nenhum jogo encontrado para esta busca.</p></div>`;
+          return;
+        }
+
+        gamesContainer.innerHTML = deals.map(deal => {
+          const title = deal.title;
+          const normalPrice = (parseFloat(deal.normalPrice) * USD_TO_BRL).toFixed(2);
+          const salePrice = (parseFloat(deal.salePrice) * USD_TO_BRL).toFixed(2);
+          const discount = Math.round(parseFloat(deal.savings));
+          const isFree = parseFloat(deal.salePrice) === 0;
+
+          const hdImage = getHDImage(deal.thumb, deal.steamAppID);
+          const storeInfo = storesMap[deal.storeID] || { name: 'Loja Digital', icon: '' };
+          const redirectLink = `https://www.cheapshark.com/redirect?dealID=${deal.dealID}`;
+
+          return `
+            <div class="game-card">
+              <div class="thumb-wrapper">
+                <div class="store-badge">
+                  ${storeInfo.icon ? `<img src="${storeInfo.icon}" class="store-icon" alt="${storeInfo.name}">` : ''}
+                  <span class="store-name">${storeInfo.name}</span>
+                </div>
+                ${isFree ? `<span class="discount-tag free-tag">GRÁTIS</span>` : (discount > 0 ? `<span class="discount-tag">-${discount}%</span>` : '')}
+                <img class="game-thumb" src="${hdImage}" alt="${title}" onerror="this.src='${FALLBACK_IMAGE}'">
+              </div>
+
+              <div class="game-info">
+                <div>
+                  <h2 class="game-title">${title}</h2>
+                  <div class="game-meta">
+                    <span class="platform-tag">PC Digital</span>
+                  </div>
+                </div>
+
+                <div class="card-footer">
+                  <div class="prices">
+                    ${!isFree && discount > 0 ? `<span class="old-price">R$ ${normalPrice.replace('.', ',')}</span>` : ''}
+                    <span class="new-price ${isFree ? 'free' : ''}">${isFree ? 'GRÁTIS' : `R$ ${salePrice.replace('.', ',')}`}</span>
+                  </div>
+
+                  <div class="actions">
+                    <button class="history-btn" title="Ver Histórico de Menor Preço" onclick="openHistory('${deal.gameID}', '${encodeURIComponent(title)}')">
+                      <i data-lucide="line-chart" size="16"></i>
+                    </button>
+                    <a href="${redirectLink}" target="_blank" rel="noopener noreferrer" class="buy-btn">
+                      ${isFree ? 'Resgatar' : 'Oferta'} <i data-lucide="external-link" size="14"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        lucide.createIcons();
+      } catch (err) {
+        console.error(err);
+        gamesContainer.innerHTML = '<div class="loader"><p>Erro ao atualizar os jogos. Tente novamente.</p></div>';
+      }
+    }
+
+    // Consulta Histórico de Menor Preço do Jogo Especificado (cheapestPriceEver)
+    async function openHistory(gameID, encodedTitle) {
+      const title = decodeURIComponent(encodedTitle);
+      document.getElementById('modalGameTitle').innerText = title;
+      document.getElementById('modalLowestPrice').innerText = 'Carregando...';
+      document.getElementById('modalLowestDate').innerText = 'Buscando histórico...';
+      document.getElementById('modalRetailPrice').innerText = 'R$ --';
+      historyModal.classList.add('active');
+
+      try {
+        const res = await fetch(`https://www.cheapshark.com/api/1.0/games?id=${gameID}`);
+        const data = await res.json();
+
+        if (data && data.cheapestPriceEver) {
+          const lowestBRL = (parseFloat(data.cheapestPriceEver.price) * USD_TO_BRL).toFixed(2);
+          const date = new Date(data.cheapestPriceEver.date * 1000).toLocaleDateString('pt-BR');
+          
+          document.getElementById('modalLowestPrice').innerText = parseFloat(data.cheapestPriceEver.price) === 0 
+            ? 'GRÁTIS (R$ 0,00)' 
+            : `R$ ${lowestBRL.replace('.', ',')}`;
+          
+          document.getElementById('modalLowestDate').innerText = `Registrado em: ${date}`;
+
+          if (data.deals && data.deals.length > 0) {
+            const retailBRL = (parseFloat(data.deals[0].retailPrice) * USD_TO_BRL).toFixed(2);
+            document.getElementById('modalRetailPrice').innerText = `R$ ${retailBRL.replace('.', ',')}`;
+            document.getElementById('modalBuyLink').href = `https://www.cheapshark.com/redirect?dealID=${data.deals[0].dealID}`;
+          }
+        }
+      } catch (err) {
+        document.getElementById('modalLowestPrice').innerText = 'Erro ao carregar';
+      }
+    }
+
+    function closeModal() {
+      historyModal.classList.remove('active');
+    }
+
+    function setMode(mode, btn) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentMode = mode;
+      searchInput.value = '';
+      fetchGames('');
+    }
+
+    let searchTimeout = null;
+    searchInput.addEventListener('input', (e) => {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        fetchGames(e.target.value);
+      }, 350);
+    });
+
+    // Iniciar
+    fetchGames('');
+  </script>
+</body>
+</html>
