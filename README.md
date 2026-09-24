@@ -30,6 +30,14 @@ A plataforma reúne informações sobre **ofertas, jogos gratuitos e histórico 
 
 ---
 
+## 🖥️ Demonstração
+
+### Tela principal
+
+![Tela principal do GameRadar](./d7f8b20a-896b-4cd5-8fec-92e4d530d520.png)
+
+---
+
 ## 🎯 Objetivo do projeto
 
 O **GameRadar** foi desenvolvido com o objetivo de facilitar a descoberta de jogos e ajudar o usuário a encontrar oportunidades de compra.
@@ -47,9 +55,12 @@ A proposta é centralizar informações relevantes sobre **jogos, preços, ofert
 
 ---
 
-## 📂 Estrutura do projeto
+## 📁 Estrutura do projeto
 
 ```text
 gameradar/
 ├── index.html
-└── GameRadar.html
+├── GameRadar.html
+├── README.md
+├── ChatGPT Image 24 de set. de 2026, 00_40_43.png
+└── d7f8b20a-896b-4cd5-8fec-92e4d530d520.png
