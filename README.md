@@ -1,5 +1,7 @@
 # 🎮 GameRadar
 
+![GameRadar](./ChatGPT%20Image%2024%20de%20set.%20de%202026%2C%2000_40_43.png)
+
 ## 🕹️ Plataforma para encontrar jogos para PC
 
 O **GameRadar** é uma aplicação web desenvolvida para ajudar jogadores a encontrar jogos para PC, comparar preços e descobrir oportunidades de compra.
@@ -42,13 +44,13 @@ O usuário pode utilizar o campo de pesquisa para encontrar rapidamente um jogo 
 
 ### 💰 Comparação de ofertas
 
-Os resultados apresentam diferentes ofertas, permitindo visualizar:
+Os resultados apresentam informações importantes sobre cada oferta:
 
-- Loja
-- Preço original
-- Preço promocional
-- Percentual de desconto
-- Acesso à oferta
+- 🏪 Loja
+- 💵 Preço original
+- 💰 Preço promocional
+- 🏷️ Percentual de desconto
+- 🔗 Acesso à oferta
 
 ### 🆓 Jogos gratuitos
 
@@ -56,7 +58,7 @@ O GameRadar também possui uma área dedicada a jogos gratuitos, facilitando a d
 
 ### 📈 Histórico de preços
 
-A plataforma permite consultar o histórico de preços dos jogos para acompanhar a evolução dos valores e identificar oportunidades.
+A plataforma permite consultar o histórico de preços dos jogos para acompanhar a evolução dos valores.
 
 ---
 
@@ -85,5 +87,6 @@ gameradar/
 ├── index.html
 ├── GameRadar.html
 ├── README.md
-│
-└── imagens/
+├── 921670a2-cdb9-40e4-8b43-9737cdae7344.png
+├── ChatGPT Image 24 de set. de 2026, 00_40_43.png
+└── d7f8b20a-896b-4cd5-8fec-92e4d530d520.png
