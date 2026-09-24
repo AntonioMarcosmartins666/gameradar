@@ -1,7 +1,5 @@
 # 🎮 GameRadar
 
-![GameRadar](./ChatGPT%20Image%2024%20de%20set.%20de%202026,%2000_40_43.png)
-
 ## 🕹️ Plataforma para encontrar jogos para PC
 
 O **GameRadar** é uma aplicação web desenvolvida para ajudar jogadores a encontrar jogos para PC, comparar preços e descobrir oportunidades de compra.
@@ -23,8 +21,8 @@ A plataforma reúne informações sobre **ofertas, jogos gratuitos e histórico 
 - 🏷️ Identificação de ofertas
 - 🆓 Destaque para jogos gratuitos
 - 📈 Consulta de histórico de preços
-- 🛒 Busca em lojas de jogos
-- 🔎 Pesquisa e organização de resultados
+- 🛒 Busca em diferentes lojas de jogos
+- 🔎 Pesquisa e organização dos resultados
 - 📱 Interface responsiva
 - ⚡ Experiência simples e objetiva
 
@@ -34,7 +32,31 @@ A plataforma reúne informações sobre **ofertas, jogos gratuitos e histórico 
 
 ### Tela principal
 
-![Tela principal do GameRadar](./d7f8b20a-896b-4cd5-8fec-92e4d530d520.png)
+A tela principal apresenta as ofertas disponíveis, permitindo pesquisar jogos e visualizar informações como loja, desconto e preço.
+
+![Demonstração do GameRadar](./d7f8b20a-896b-4cd5-8fec-92e4d530d520.png)
+
+### 🔎 Pesquisa de jogos
+
+O usuário pode utilizar o campo de pesquisa para encontrar rapidamente um jogo específico.
+
+### 💰 Comparação de ofertas
+
+Os resultados apresentam diferentes ofertas, permitindo visualizar:
+
+- Loja
+- Preço original
+- Preço promocional
+- Percentual de desconto
+- Acesso à oferta
+
+### 🆓 Jogos gratuitos
+
+O GameRadar também possui uma área dedicada a jogos gratuitos, facilitando a descoberta de novos títulos sem custo.
+
+### 📈 Histórico de preços
+
+A plataforma permite consultar o histórico de preços dos jogos para acompanhar a evolução dos valores e identificar oportunidades.
 
 ---
 
@@ -59,8 +81,9 @@ A proposta é centralizar informações relevantes sobre **jogos, preços, ofert
 
 ```text
 gameradar/
+│
 ├── index.html
 ├── GameRadar.html
 ├── README.md
-├── ChatGPT Image 24 de set. de 2026, 00_40_43.png
-└── d7f8b20a-896b-4cd5-8fec-92e4d530d520.png
+│
+└── imagens/
