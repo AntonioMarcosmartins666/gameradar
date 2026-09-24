@@ -1,5 +1,7 @@
 # 🎮 GameRadar
 
+![GameRadar](./ChatGPT%20Image%2024%20de%20set.%20de%202026,%2000_40_43.png)
+
 ## 🕹️ Plataforma para encontrar jogos para PC
 
 O **GameRadar** é uma aplicação web desenvolvida para ajudar jogadores a encontrar jogos para PC, comparar preços e descobrir oportunidades de compra.
